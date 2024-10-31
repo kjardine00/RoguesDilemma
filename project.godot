@@ -20,10 +20,13 @@ GameManager="*res://scripts/managers/game_manager.gd"
 
 [display]
 
-window/size/viewport_width=640
-window/size/viewport_height=360
 window/size/resizable=false
 window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
+
+[global_group]
+
+camera=""
 
 [input]
 
