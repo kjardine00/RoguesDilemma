@@ -67,7 +67,6 @@ func generate_level():
 	
 	# Uses the walker step history to make coords for room placement
 	rooms_positions = rooms.duplicate()
-	print(str(rooms_positions))
 	
 	if start_room != null:
 		place_starting_room()
