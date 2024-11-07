@@ -13,6 +13,7 @@ var end_rooms = []
 @export var boss_rooms: Array[PackedScene]
 @export var normal_rooms: Array[PackedScene]
 @export var treasure_rooms: Array[PackedScene]
+@export var player_character: PackedScene
 
 var room_size: Vector2 = Vector2(352, 208)
 
@@ -20,13 +21,13 @@ var borders:= Rect2(1, 1, 20, 20)
 @export var starting_room_pos = Vector2()
 
 @onready var level: Node2D = $Rooms
-@onready var num_of_rooms_lbl: Label = $CanvasLayer/Label
+@onready var player: Node2D = $Player
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	number_of_rooms = GameManager.number_of_rooms
+	#number_of_rooms = GameManager.number_of_rooms
 	call_deferred("generate_level")
-	num_of_rooms_lbl.text = "NUMBER OF ROOMS: " + str(number_of_rooms)
+	#num_of_rooms_lbl.text = "NUMBER OF ROOMS: " + str(number_of_rooms)
 	
 	# Gets the correct size of the rooms
 	if normal_rooms.size() != 0:
@@ -38,6 +39,7 @@ func _ready():
 	else:
 		printerr("NO NORMAL ROOMS FOUND")
 	
+	
 
 func generate_level():
 	var random = RandomNumberGenerator.new()
@@ -46,7 +48,7 @@ func generate_level():
 	#TODO remove after builing lvl gen, need to decide on the initial level builds and don't need the control in an interface
 	if number_of_rooms < 7:
 		number_of_rooms = 10
-		num_of_rooms_lbl.text = "NUMBER OF ROOMS: " + str(number_of_rooms)
+		#num_of_rooms_lbl.text = "NUMBER OF ROOMS: " + str(number_of_rooms)
 	
 	#randomizes the range of number of rooms per generation
 	number_of_rooms = randi_range(number_of_rooms / 1.1, number_of_rooms * 1.2)
@@ -89,12 +91,16 @@ func generate_level():
 			var inst = normal_rooms.pick_random().instantiate()
 			level.call_deferred("add_child", inst)
 			inst.position = location * room_size
+			create_doors(location, inst)
 	else:
 		printerr("NO NORMAL ROOMS FOUND")
+		
+		
 
 func place_starting_room():
 	var inst = start_room.instantiate()
 	level.call_deferred("add_child", inst)
+	
 	
 	## STARTING ROOM ALWAYS IN THE SAME POSITION
 	
@@ -108,8 +114,11 @@ func place_starting_room():
 		#starting_room_pos = rooms.pick_random()
 	#
 	#inst.position = starting_room_pos * room_size
-	#
-	#rooms.erase(starting_room_pos)
+	
+	create_doors(starting_room_pos, inst)
+	
+	rooms.erase(starting_room_pos)
+	
 
 func place_boss_room():
 	var boss_room_location = starting_room_pos
@@ -123,6 +132,8 @@ func place_boss_room():
 	level.call_deferred("add_child", inst)
 	inst.position = boss_room_location * room_size
 	
+	create_doors(boss_room_location, inst)
+	
 	rooms.erase(boss_room_location)
 	end_rooms.erase(boss_room_location)
 	
@@ -133,22 +144,34 @@ func place_treasure_room():
 	level.call_deferred("add_child", inst)
 	inst.position = treasure_room_location * room_size
 	
+	create_doors(treasure_room_location, inst)
+	
 	rooms.erase(treasure_room_location)
 	end_rooms.erase(treasure_room_location)
 
-func _on_plus_btn_pressed() -> void:
-	GameManager.number_of_rooms += 1
-	num_of_rooms_lbl.text = "NUMBER OF ROOMS: " + str(GameManager.number_of_rooms)
-
-func _on_minus_btn_pressed() -> void:
-	GameManager.number_of_rooms -= 1
-	num_of_rooms_lbl.text = "NUMBER OF ROOMS: " + str(GameManager.number_of_rooms)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("reset"):
 		get_tree().reload_current_scene()
 
-func _on_gen_btn_pressed():
-	pass
+func create_doors(room_location, inst):
+	var left_coords = Vector2(0, 10)
+	var up_coords = Vector2(9, 0)
+	var right_coords = Vector2(20, 10)
+	var down_coords = Vector2(9, 13)
 	
-	get_tree().reload_current_scene()
+	for i in inst.get_children():
+		if i is TileMapLayer:
+			var tile_map = i
+			var h_tile_pattern =  i.tile_set.get_pattern(0)
+			var v_tile_pattern = i.tile_set.get_pattern(1)
+			
+			if !rooms_positions.has(room_location + Vector2.LEFT):
+				tile_map.set_pattern(left_coords, h_tile_pattern)
+			if !rooms_positions.has(room_location + Vector2.UP):
+				tile_map.set_pattern(up_coords, v_tile_pattern)
+			if !rooms_positions.has(room_location + Vector2.RIGHT):
+				tile_map.set_pattern(right_coords, h_tile_pattern)
+			if !rooms_positions.has(room_location + Vector2.DOWN):
+				tile_map.set_pattern(down_coords, v_tile_pattern)
+			

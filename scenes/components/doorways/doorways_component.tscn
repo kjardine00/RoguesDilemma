@@ -1,0 +1,79 @@
+[gd_scene load_steps=7 format=3 uid="uid://cmlivjtq45c4x"]
+
+[ext_resource type="Script" path="res://scripts/components/doorways/doorways_component.gd" id="1_ru2o7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70a63"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wnunb"]
+size = Vector2(16, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qp562"]
+size = Vector2(64, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qfel6"]
+size = Vector2(16, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7hr6"]
+size = Vector2(64, 16)
+
+[node name="Doorways" type="Node2D"]
+script = ExtResource("1_ru2o7")
+left = true
+right = true
+down = true
+up_down_size = Vector2(64, 12)
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="PlayerDetectorCollision" type="CollisionShape2D" parent="PlayerDetector"]
+position = Vector2(144, 110)
+shape = SubResource("RectangleShape2D_70a63")
+debug_color = Color(0.992374, 0, 0.252909, 0.42)
+
+[node name="Left" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="LeftCollision" type="CollisionShape2D" parent="Left"]
+shape = SubResource("RectangleShape2D_wnunb")
+disabled = true
+debug_color = Color(0.918785, 0.387997, 0, 0.42)
+
+[node name="LeftMarker" type="Marker2D" parent="Left"]
+
+[node name="Up" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="UpCollision" type="CollisionShape2D" parent="Up"]
+shape = SubResource("RectangleShape2D_qp562")
+disabled = true
+debug_color = Color(0.653652, 0.56391, 1.92523e-07, 0.42)
+
+[node name="UpMarker" type="Marker2D" parent="Up"]
+
+[node name="Right" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="RightCollision" type="CollisionShape2D" parent="Right"]
+shape = SubResource("RectangleShape2D_qfel6")
+disabled = true
+debug_color = Color(0.156887, 0.518102, 1, 0.42)
+
+[node name="RightMarker" type="Marker2D" parent="Right"]
+
+[node name="Down" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="DownCollision" type="CollisionShape2D" parent="Down"]
+shape = SubResource("RectangleShape2D_p7hr6")
+disabled = true
+debug_color = Color(0.583854, 0.380521, 1, 0.42)
+
+[node name="DownMarker" type="Marker2D" parent="Down"]
+
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
+[connection signal="body_entered" from="Left" to="." method="_on_left_body_entered"]
+[connection signal="body_entered" from="Up" to="." method="_on_up_body_entered"]
+[connection signal="body_entered" from="Right" to="." method="_on_right_body_entered"]
+[connection signal="body_entered" from="Down" to="." method="_on_down_body_entered"]

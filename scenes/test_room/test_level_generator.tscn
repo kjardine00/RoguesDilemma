@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://emhin0b75t3g"]
+
+[ext_resource type="Script" path="res://scripts/managers/level_generation/level_generator.gd" id="1_bd327"]
+[ext_resource type="PackedScene" uid="uid://b2ahopiykmyxh" path="res://scenes/rooms/dungeon_rooms/start_room.tscn" id="2_fttkn"]
+[ext_resource type="Script" path="res://scripts/components/camera_2d.gd" id="2_xaj2q"]
+[ext_resource type="PackedScene" uid="uid://dategjlc6thfx" path="res://scenes/rooms/dungeon_rooms/boss_rooms/boss_room_1.tscn" id="3_68sry"]
+[ext_resource type="PackedScene" uid="uid://cikerl5ewsgpc" path="res://scenes/rooms/dungeon_rooms/normal_rooms/neutral_room_1.tscn" id="3_wl1tb"]
+[ext_resource type="PackedScene" uid="uid://7rkdv75yps3y" path="res://scenes/rooms/dungeon_rooms/normal_rooms/neutral_room_2.tscn" id="4_ntyqa"]
+[ext_resource type="PackedScene" uid="uid://12dcca0ujemb" path="res://scenes/rooms/dungeon_rooms/treasure_rooms/treasure_room_1.tscn" id="6_1bhrf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bjvyb"]
+font_size = 25
+
+[node name="TestLevelGenerator" type="Node2D"]
+script = ExtResource("1_bd327")
+start_room = ExtResource("2_fttkn")
+boss_rooms = Array[PackedScene]([ExtResource("3_68sry")])
+normal_rooms = Array[PackedScene]([ExtResource("3_wl1tb"), ExtResource("4_ntyqa")])
+treasure_rooms = Array[PackedScene]([ExtResource("6_1bhrf")])
+starting_room_pos = Vector2(10, 1)
+
+[node name="Rooms" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Number of Rooms"
+label_settings = SubResource("LabelSettings_bjvyb")
+
+[node name="minusBtn" type="Button" parent="CanvasLayer"]
+offset_left = 35.0
+offset_top = 44.0
+offset_right = 80.0
+offset_bottom = 73.0
+text = "-"
+
+[node name="plusBtn" type="Button" parent="CanvasLayer"]
+offset_left = 137.0
+offset_top = 45.0
+offset_right = 182.0
+offset_bottom = 74.0
+text = "+"
+
+[node name="genBtn" type="Button" parent="CanvasLayer"]
+visible = false
+offset_left = 37.0
+offset_top = 90.0
+offset_right = 182.0
+offset_bottom = 121.0
+text = "Generate"
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["camera"]]
+position = Vector2(5120, 2880)
+enabled = false
+zoom = Vector2(0.1, 0.1)
+script = ExtResource("2_xaj2q")
+
+[connection signal="pressed" from="CanvasLayer/minusBtn" to="." method="_on_minus_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/plusBtn" to="." method="_on_plus_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/genBtn" to="." method="_on_gen_btn_pressed"]

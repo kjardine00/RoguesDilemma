@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://fwaaqkym5emr"]
+[gd_scene load_steps=4 format=3 uid="uid://fwaaqkym5emr"]
 
 [ext_resource type="Script" path="res://scripts/test_world_gen.gd" id="1_10vgo"]
 [ext_resource type="PackedScene" uid="uid://b01hcbnjyy55r" path="res://scenes/managers/level_generator.tscn" id="1_xqjkl"]
 [ext_resource type="PackedScene" uid="uid://j04kuvkdxkgy" path="res://scenes/player_character/player_character.tscn" id="2_qul63"]
-[ext_resource type="PackedScene" uid="uid://db6s7ewuk7kl1" path="res://scenes/player_character/player_camera.tscn" id="3_a1cjl"]
 
 [node name="TestWorldGen" type="Node2D"]
 script = ExtResource("1_10vgo")
@@ -12,7 +11,3 @@ script = ExtResource("1_10vgo")
 number_of_rooms = 10
 number_of_treasure_rooms = 1
 player_character = ExtResource("2_qul63")
-
-[node name="Player" parent="." instance=ExtResource("2_qul63")]
-
-[node name="Camera2D" parent="Player" groups=["camera"] instance=ExtResource("3_a1cjl")]

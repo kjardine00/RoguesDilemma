@@ -1,32 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnrotf5ndt7x5"]
+[gd_scene load_steps=3 format=3 uid="uid://cnrotf5ndt7x5"]
 
 [ext_resource type="PackedScene" uid="uid://b2oxm45stsfj1" path="res://scenes/test_room/test_room.tscn" id="1_11n0x"]
-[ext_resource type="Script" path="res://scripts/rooms/test_rooms/test_level.gd" id="1_qh1ls"]
-[ext_resource type="PackedScene" uid="uid://j04kuvkdxkgy" path="res://scenes/player_character/player_character.tscn" id="3_the36"]
-[ext_resource type="Script" path="res://scripts/components/player_camera.gd" id="4_bxp78"]
+[ext_resource type="PackedScene" uid="uid://b2ahopiykmyxh" path="res://scenes/rooms/dungeon_rooms/start_room.tscn" id="4_bqbp7"]
 
 [node name="TestLevel" type="Node2D"]
-script = ExtResource("1_qh1ls")
+metadata/_edit_vertical_guides_ = [688.0]
+metadata/_edit_horizontal_guides_ = [256.0]
+
+[node name="start_room" parent="." instance=ExtResource("4_bqbp7")]
 
 [node name="TestRoom" parent="." instance=ExtResource("1_11n0x")]
-position = Vector2(0, 16)
+position = Vector2(352, 0)
 
 [node name="TestRoom2" parent="." instance=ExtResource("1_11n0x")]
-position = Vector2(352, 16)
+position = Vector2(0, 240)
 
 [node name="TestRoom3" parent="." instance=ExtResource("1_11n0x")]
-position = Vector2(-352, 16)
+position = Vector2(352, 240)
 
 [node name="TestRoom4" parent="." instance=ExtResource("1_11n0x")]
-position = Vector2(0, 256)
+position = Vector2(-352, 0)
 
 [node name="TestRoom5" parent="." instance=ExtResource("1_11n0x")]
-position = Vector2(0, -224)
-
-[node name="Player" parent="." instance=ExtResource("3_the36")]
-position = Vector2(128, 160)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(4, 4)
-position_smoothing_enabled = true
-script = ExtResource("4_bxp78")
+position = Vector2(-352, 240)
