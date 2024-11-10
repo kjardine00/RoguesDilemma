@@ -9,12 +9,10 @@
 
 [node name="LevelGenerator" type="Node2D"]
 script = ExtResource("1_gfvy0")
-number_of_rooms = null
-number_of_treasure_rooms = null
 start_room = ExtResource("2_v1hm5")
 boss_rooms = Array[PackedScene]([ExtResource("3_bm34y")])
-normal_rooms = Array[PackedScene]([ExtResource("4_kr5xl"), ExtResource("5_vxpuy")])
 treasure_rooms = Array[PackedScene]([ExtResource("6_07yd8")])
+normal_rooms = Array[PackedScene]([ExtResource("4_kr5xl"), ExtResource("5_vxpuy")])
 starting_room_pos = Vector2(10, 1)
 
 [node name="Rooms" type="Node2D" parent="."]

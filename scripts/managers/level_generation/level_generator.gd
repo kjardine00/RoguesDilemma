@@ -11,8 +11,10 @@ var end_rooms = []
 
 @export var start_room: PackedScene
 @export var boss_rooms: Array[PackedScene]
-@export var normal_rooms: Array[PackedScene]
+@export var hallway_rooms : Array[PackedScene]
+@export var irregular_rooms : Array[PackedScene]
 @export var treasure_rooms: Array[PackedScene]
+@export var normal_rooms: Array[PackedScene]
 @export var player_character: PackedScene
 
 var room_size: Vector2 = Vector2(352, 208)
@@ -38,8 +40,7 @@ func _ready():
 		inst.queue_free()
 	else:
 		printerr("NO NORMAL ROOMS FOUND")
-	
-	
+
 
 func generate_level():
 	var random = RandomNumberGenerator.new()
@@ -79,6 +80,21 @@ func generate_level():
 		place_boss_room()
 	else:
 		printerr("NO BOSS ROOM FOUND")
+		
+	if hallway_rooms.size() != 0:
+		place_hallway_rooms()
+	else:
+		printerr("NO HALLWAY ROOM FOUND")
+	
+	if irregular_rooms.size() != 0:
+		place_irregular_rooms()
+	else:
+		printerr("NO HALLWAY ROOM FOUND")
+	
+	if boss_rooms.size() != 0:
+		place_boss_room()
+	else:
+		printerr("NO BOSS ROOM FOUND")
 	
 	if treasure_rooms.size() != 0:
 		for i in number_of_treasure_rooms:
@@ -94,8 +110,7 @@ func generate_level():
 			create_doors(location, inst)
 	else:
 		printerr("NO NORMAL ROOMS FOUND")
-		
-		
+
 
 func place_starting_room():
 	var inst = start_room.instantiate()
@@ -118,7 +133,7 @@ func place_starting_room():
 	create_doors(starting_room_pos, inst)
 	
 	rooms.erase(starting_room_pos)
-	
+
 
 func place_boss_room():
 	var boss_room_location = starting_room_pos
@@ -136,7 +151,19 @@ func place_boss_room():
 	
 	rooms.erase(boss_room_location)
 	end_rooms.erase(boss_room_location)
-	
+
+
+func place_hallway_rooms():
+	#TODO Figure out logic for hallway rooms. We need to get the hallway lenght from the walker and apply rooms based on hallway locations like end rooms
+	pass
+
+
+func place_irregular_rooms():
+	##TODO TODO figure out how to not have this live here and have it live in the generation script so that rooms can be whatever grid size and they just fit where they should
+	#TODO Here we need to get the rooms grid size and then find a spot for it to fit and then remove it from the coords pool if the room takes up more than 1 coord
+	pass
+
+
 func place_treasure_room():
 	var treasure_room_location = end_rooms[randi_range(0, end_rooms.size() - 1)]
 	
@@ -153,6 +180,7 @@ func place_treasure_room():
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("reset"):
 		get_tree().reload_current_scene()
+
 
 func create_doors(room_location, inst):
 	var left_coords = Vector2(0, 10)
@@ -174,4 +202,3 @@ func create_doors(room_location, inst):
 				tile_map.set_pattern(right_coords, h_tile_pattern)
 			if !rooms_positions.has(room_location + Vector2.DOWN):
 				tile_map.set_pattern(down_coords, v_tile_pattern)
-			
